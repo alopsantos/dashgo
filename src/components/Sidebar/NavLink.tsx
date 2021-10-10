@@ -1,7 +1,12 @@
 import { ElementType } from "react";
-import { Link, Icon, Text, LinkProps as ChakraLinkProps } from "@chakra-ui/react";
+import {
+  Link,
+  Icon,
+  Text,
+  LinkProps as ChakraLinkProps,
+} from "@chakra-ui/react";
 
-interface NavLinkProps extends ChakraLinkProps  {
+interface NavLinkProps extends ChakraLinkProps {
   icon: ElementType;
   children: string;
 }

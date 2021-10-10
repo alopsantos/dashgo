@@ -12,6 +12,7 @@ import {
   Td,
   Checkbox,
   Text,
+  useBreakpointValue
 } from "@chakra-ui/react";
 import { RiAddLine, RiEditLine, RiPencilLine } from "react-icons/ri";
 
@@ -20,11 +21,15 @@ import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
 
 export default function UserList() {
+  const isWideVersion = useBreakpointValue({
+    base: false,
+    lg: true,
+  })
   return (
     <Box>
       <Header />
 
-      <Flex w="100%" my="6" maxWidth={1480} mx="auto">
+      <Flex w="100%" my="6" maxWidth={1480} mx="auto" px="6">
         <Sidebar />
 
         <Box flex="1" borderRadius={8} bg="gray.800" p="8">
@@ -46,16 +51,16 @@ export default function UserList() {
           <Table colorScheme="whiteAlpha">
             <Thead>
               <Tr>
-                <Th px="6" color="">
+                <Th px={["4", "4", "6"]} color="">
                   <Checkbox colorScheme="pink" />
                 </Th>
                 <Th>Usuários</Th>
-                <Th>Data de Cadastro</Th>
+                {isWideVersion && <Th>Data de Cadastro</Th>}
                 <Th width="8"></Th>
               </Tr>
             </Thead>
             <Tbody>
-              <Tr px="6">
+              <Tr px={["4", "4", "6"]} >
                 <Td>
                   <Checkbox colorScheme="pink" />
                 </Td>
@@ -67,7 +72,7 @@ export default function UserList() {
                     </Text>
                   </Box>
                 </Td>
-                <Td>04 de Abril, 2021</Td>
+                {isWideVersion && <Td>04 de Abril, 2021</Td>}
                 <Td>
                   <Button
                     as="a"
@@ -81,7 +86,7 @@ export default function UserList() {
                   </Button>
                 </Td>
               </Tr>
-              <Tr px="6">
+              <Tr px={["4", "4", "6"]} >
                 <Td>
                   <Checkbox colorScheme="pink" />
                 </Td>
@@ -93,7 +98,7 @@ export default function UserList() {
                     </Text>
                   </Box>
                 </Td>
-                <Td>04 de Abril, 2021</Td>
+                {isWideVersion && <Td>04 de Abril, 2021</Td>}
                 <Td>
                   <Button
                     as="a"
