@@ -3,52 +3,52 @@ import Header from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
 import dynamic from "next/dynamic";
 
-const Chart = dynamic(() => import('react-apexcharts'), { ssr: false, });
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const options = {
   chart: {
     toolbar: {
-      show:false,
+      show: false,
     },
     zoom: {
       enabled: false,
     },
-    foreColor: theme.colors.gray[500]
+    foreColor: theme.colors.gray[500],
   },
   grid: {
     show: false,
   },
-  dataLabels:{
+  dataLabels: {
     enabled: false,
   },
   tooltip: {
     enabled: false,
   },
-  xaxis:{
-    type: 'datetime',
+  xaxis: {
+    type: "datetime",
     axisBorder: {
-      color: theme.colors.gray[600]
+      color: theme.colors.gray[600],
     },
-    axisTicks:{
-      color: theme.colors.gray[600]
+    axisTicks: {
+      color: theme.colors.gray[600],
     },
     categories: [
-      '2021-03-01T00:00:00.000Z',
-      '2021-03-05T00:00:00.000Z',
-      '2021-03-08T00:00:00.000Z',
-      '2021-03-10T00:00:00.000Z',
-      '2021-03-11T00:00:00.000Z',
-      '2021-03-12T00:00:00.000Z',
-      '2021-03-28T00:00:00.000Z'
-    ]
+      "2021-03-01T00:00:00.000Z",
+      "2021-03-05T00:00:00.000Z",
+      "2021-03-08T00:00:00.000Z",
+      "2021-03-10T00:00:00.000Z",
+      "2021-03-11T00:00:00.000Z",
+      "2021-03-12T00:00:00.000Z",
+      "2021-03-28T00:00:00.000Z",
+    ],
   },
   fill: {
     opacity: 0.3,
-    type: 'gradient',
+    type: "gradient",
     gradient: {
-      shade: 'dark',
-    }
-  }
+      shade: "dark",
+    },
+  },
 };
 const series = [{ name: "series1", data: [31, 120, 10, 28, 61, 18, 109] }];
 
@@ -61,14 +61,14 @@ export default function Dashboard() {
         <Sidebar />
 
         <SimpleGrid flex="1" gap="4" minChildWidth="320px" align="flex-start">
-          <Box p={["6","8"]} bg="gray.800" borderRadius={8} pb="4">
+          <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
             <Text fontSize="lg" mb="4">
               Vendas da semana
             </Text>
             <Chart options={options} series={series} type="area" height={160} />
           </Box>
 
-          <Box p={["6","8"]} bg="gray.800" borderRadius={8}>
+          <Box p={["6", "8"]} bg="gray.800" borderRadius={8}>
             <Text fontSize="lg" mb="4">
               Vendas da semana
             </Text>
