@@ -8,14 +8,18 @@ import {
   VStack,
   SimpleGrid,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
+import { useMutation } from "react-query";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Input } from "../../components/Form/Input";
 import Header from "../../components/Header";
 import { Sidebar } from "../../components/Sidebar";
+import { api } from "../../services/api";
+import { queryClient } from "../../services/queryClient";
 
 type CreateUserFormData = {
   name: string;
@@ -37,18 +41,39 @@ const CreateUserFormSchema = yup.object().shape({
 });
 
 export default function UserCreate() {
-  const { register, handleSubmit, formState } = useForm({
+  const router = useRouter();
+
+  const createUser = useMutation(
+    async (user: CreateUserFormData) => {
+      const response = await api.post("users", {
+        user: {
+          ...user,
+          created_at: new Date(),
+        },
+      });
+
+      return response.data.user;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["users"]);
+      },
+    }
+  );
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<CreateUserFormData>({
     resolver: yupResolver(CreateUserFormSchema),
   });
-
-  const { errors } = formState;
 
   const handleCreateUser: SubmitHandler<CreateUserFormData> = async (
     values
   ) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    console.log(values);
+    await createUser.mutateAsync(values);
+    router.push("/users");
   };
   return (
     <Box>
@@ -110,11 +135,7 @@ export default function UserCreate() {
               <Link href="/users/create " passHref>
                 <Button colorScheme="whiteAlpha">Cancelar</Button>
               </Link>
-              <Button
-                type="submit"
-                isLoading={formState.isSubmitting}
-                colorScheme="pink"
-              >
+              <Button type="submit" isLoading={isSubmitting} colorScheme="pink">
                 Salvar
               </Button>
             </HStack>
