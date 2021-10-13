@@ -29,9 +29,9 @@ export default function UserList() {
   const { data, isLoading, error } = useQuery("users", async () => {
     const response = await fetch("http://localhost:3000/api/users");
 
-    const dataa = await response.json();
+    const data = await response.json();
 
-    const data =  dataa.users.map(user => {
+    const users =  data.users.map(user => {
       return {
         id: user.id,
         name: user.name,
@@ -44,7 +44,7 @@ export default function UserList() {
       }
     });
 
-    return data;
+    return users;
   });
 
   const isWideVersion = useBreakpointValue({
@@ -78,7 +78,7 @@ export default function UserList() {
             </Link>
           </Flex>
           {isLoading ? (
-            <Flex align="center">
+            <Flex justify="center">
               <Spinner />
             </Flex>
           ) : error ? (
@@ -99,7 +99,7 @@ export default function UserList() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {data.users.map((user) => {
+                  {data.map((user) => {
                     return (
                       <Tr px={["4", "4", "6"]} key={user.id}>
                         <Td>
