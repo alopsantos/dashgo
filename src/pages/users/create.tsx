@@ -51,8 +51,6 @@ export default function UserCreate() {
           created_at: new Date(),
         },
       });
-
-      return response.data.user;
     },
     {
       onSuccess: () => {

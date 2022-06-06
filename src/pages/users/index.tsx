@@ -1,57 +1,61 @@
-import { useState } from "react";
 import {
-  Flex,
   Box,
+  Button,
+  Checkbox,
+  Flex,
   Heading,
   Icon,
   Link,
-  Button,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Checkbox,
-  Text,
-  useBreakpointValue,
   Spinner,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  useBreakpointValue
 } from "@chakra-ui/react";
-import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import NextLink from "next/link";
-
+import { useState } from "react";
+import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import Header from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
-import { getUsers, useUsers } from "../../services/hooks/users/useUsers";
-import { queryClient } from "../../services/queryClient";
-import { api } from "../../services/api";
-import { GetServerSideProps } from "next";
 
-export default function UserList({ users }) {
-  const [page, setPage] = useState(1);
-  const { data, isLoading, isFetching, error } = useUsers(page, {
-    initialData: users
-  });
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  createdAt: string;
+};
+
+type GetUsersResponse = {
+  totalCount: number;
+  users: User[];
+};
+
+export default function UserList(users: User[]) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data, isLoading, isFetching, error } = useUser(currentPage);
 
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
   });
 
-  async function handlePrefecthUser(userId: string) {
-    await queryClient.prefetchQuery(
-      ["user", userId],
-      async () => {
-        const response = await api.get(`users/${userId}`);
-
-        return response.data;
-      },
-      {
-        staleTime: 1000 * 60 * 10, // 10 minutos
-      }
-    );
-  }
+  // async function handlePrefecthUser(userId: string) {
+  //   await queryClient.prefetchQuery(
+  //     ["user", userId],
+  //     async () => {
+  //       const response = await api.get(`users/${userId}`);
+  //       return response.data;
+  //     },
+  //     {
+  //       staleTime: 1000 * 60 * 10, // 10 minutos
+  //     }
+  //   );
+  // }
 
   return (
     <Box>
@@ -113,7 +117,7 @@ export default function UserList({ users }) {
                           <Box>
                             <Link
                               color="purple.400"
-                              onMouseEnter={() => handlePrefecthUser(user.id)}
+                              onMouseEnter={() => {}}
                             >
                               <Text fontWeight="bold">{user.name}</Text>
                             </Link>
@@ -143,8 +147,8 @@ export default function UserList({ users }) {
 
               <Pagination
                 totalCountOffRegisters={data.totalCount}
-                currentPage={page}
-                onPageChange={setPage}
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
               />
             </>
           )}
@@ -154,13 +158,13 @@ export default function UserList({ users }) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const { users, totalCount } = await getUsers(1);
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const { users, totalCount } = await getUsers(1);
 
-  return {
-    props: {
-      users,
-      totalCount
-    },
-  };
-};
+//   return {
+//     props: {
+//       users,
+//       totalCount,
+//     },
+//   };
+// };
